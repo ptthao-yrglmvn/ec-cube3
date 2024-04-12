@@ -34,10 +34,7 @@ class PluginAutomationCest
         
         $I->see('ホーム', 'h1.page-header');
 
-        // $fileName = 'ProductReview.zip';
-        // $this->filePath = '/'.'plugins/'.$fileName;
-        $this->filePath = getenv('FILE_PATH');
-
+        $this->filePath = 'plugins/'.getenv('FILE_PATH');
     }
 
     public function _after(AcceptanceTester $I)
