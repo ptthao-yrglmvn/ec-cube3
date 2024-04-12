@@ -4,19 +4,10 @@ paths:
     data: codeception/_data
     support: codeception/_support
     envs: codeception/_envs
+    log: codeception/_output
 actor_suffix: Tester
-settings:
-    bootstrap: _bootstrap.php
 extensions:
     enabled:
         - Codeception\Extension\RunFailed
-params:
-    - .env
 coverage:
     enabled: true
-    whitelist:
-        include:
-            - src/Eccube/*
-        exclude:
-            - src/Eccube/Resource/*
-            - src/Eccube/Command/*

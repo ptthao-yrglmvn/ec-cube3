@@ -12,7 +12,6 @@ modules:
         - \Helper\Acceptance
         - WebDriver
         - Asserts
-        - MailCatcher
     config:
         WebDriver:
             host: '%WEB_DRIVER_HOST%'
