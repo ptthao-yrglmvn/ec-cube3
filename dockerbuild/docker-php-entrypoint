@@ -1,0 +1,33 @@
+#!/bin/sh
+set -e
+
+if [ -n "${USER_ID}" ]; then
+    usermod -u ${USER_ID} -o www-data
+fi
+if [ -n "${GROUP_ID}" ]; then
+    groupmod -g ${GROUP_ID} www-data
+fi
+
+if [ ! -d /var/www/html/vendor/bin ]; then
+    composer install --dev --no-interaction
+fi
+
+FILE=html/install.php
+if [ -f "$FILE" ]; then
+    echo "$FILE exists."
+    if echo "$DATABASE_URL" | grep -q "postgres"; then
+        echo "postgres";
+        php eccube_install.php pgsql none
+    fi
+    if echo "$DATABASE_URL" | grep -q "mysql"; then
+        echo "mysql";
+        php eccube_install.php mysql none
+    fi
+    rm html/install.php
+    rm -rf app/cache/*  
+fi
+
+# Apache gets grumpy about PID files pre-existing
+rm -f /var/run/apache2/apache2.pid
+
+exec apache2 -DFOREGROUND

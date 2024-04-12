@@ -1,0 +1,25 @@
+version: '3'
+
+volumes:
+  pg-database:
+    driver: local
+
+services:
+  ec-cube:
+    depends_on:
+      - postgres
+    command: ["wait-for-postgres.sh", "postgres", "5432", "dbuser", "postgres", "secret", "docker-php-entrypoint"]
+    environment:
+      DATABASE_URL: "postgres://dbuser:secret@postgres:5432/eccubedb"
+
+  postgres:
+    image: postgres:9.2
+    environment:
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: secret
+    ports:
+      - 15432:5432
+    volumes:
+      - pg-database:/var/lib/postgresql/data
+    networks:
+      - backend
